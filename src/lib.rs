@@ -77,6 +77,9 @@ pub mod wrapper {
         pub fn new(p: cxx::UniquePtr<crate::ffi::Iterator>) -> DbIterator {
             DbIterator { iter: p }
         }
+        pub fn prefix_iter(db: &DB, key: &Vec<u8>) -> Self {
+            DbIterator { iter : unsafe { db.db.Prefix_Iter(key.as_ptr(), key.len()) } }
+        }
     }
     impl Iterator for DbIterator {
         type Item = (Vec<u8>, Vec<u8>);

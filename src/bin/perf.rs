@@ -1,7 +1,7 @@
 use rocksdb_rust_binding::wrapper;
 
 
-use std::fmt::format;
+
 use std::thread::*;
 use std::time::SystemTime;
 
@@ -14,7 +14,7 @@ fn main() {
     let arg_3 = args[3].as_str();
     let max_parallel: usize = arg_1.parse().unwrap();
     let max_iter: usize = arg_2.parse().unwrap();
-    let need_print: bool = arg_3.parse().unwrap();
+    let _need_print: bool = arg_3.parse().unwrap();
     let total = max_parallel * max_iter;
 
     let db = std::sync::Arc::new(wrapper::DB::open_default("/dev/shm/db_test".to_string()));
