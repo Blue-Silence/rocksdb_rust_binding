@@ -6,18 +6,6 @@
 #include <string>
 
 
-//using rust::string;
-
-class FooClass
-{
-public:
-    void print() const;
-};
-
-class DbIter {
-
-};
-
 using Iterator = rocksdb::Iterator;
 
 class Pair;

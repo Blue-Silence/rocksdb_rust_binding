@@ -9,8 +9,6 @@ mod ffi {
 
         type DB;
         fn open_default(path: String) -> UniquePtr<DB>;
-        //fn Put(self: &DB, key: String, value: String) -> Result<()>;
-        //fn Get(self: &DB, key: String) -> Result<String>;
         unsafe fn Get(self: &DB, key: *const u8, k_l: usize) -> Result<UniquePtr<CxxString>>;
         unsafe fn Put(
             self: &DB,
@@ -20,7 +18,6 @@ mod ffi {
             v_l: usize,
         ) -> Result<()>;
         unsafe fn Delete(self: &DB, key: *const u8, k_l: usize) -> Result<()>;
-        //fn Get_L(self: &DB, key: String) -> Result<String>;
 
         type Iterator;
         unsafe fn Prefix_Iter(self: &DB, key: *const u8, k_l: usize) -> UniquePtr<Iterator>;
@@ -31,7 +28,7 @@ mod ffi {
 unsafe impl Sync for ffi::DB {}
 unsafe impl Send for ffi::DB {}
 
-pub mod wrapper {
+mod wrapper {
     pub struct DB {
         db: cxx::UniquePtr<crate::ffi::DB>,
     }
@@ -93,3 +90,5 @@ pub mod wrapper {
         }
     }
 }
+
+pub use wrapper::*;

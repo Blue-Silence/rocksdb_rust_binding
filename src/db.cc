@@ -21,28 +21,6 @@ DB::~DB()
     delete this->db;
 }
 
-/*
-void DB::Put(string key, string value) const {
-    rocksdb::DB *db = (rocksdb::DB *) this->db;
-    rocksdb::Status s = db->Put(rocksdb::WriteOptions(), key.c_str(), value.c_str());
-
-    if(!s.ok())
-        throw std::runtime_error(s.ToString());
-}
-*/
-
-/*
-string DB::Get(string key) const {
-    rocksdb::DB *db = (rocksdb::DB *) this->db;
-    std::string value;
-    rocksdb::Status s = db->Get(rocksdb::ReadOptions(), key.c_str(), &value);
-
-    if(!s.ok())
-        throw std::runtime_error(s.ToString());
-    return string{value};
-}
-*/
-
 using ROCKSDB_NAMESPACE::Slice;
 
 void DB::Put(const uint8_t *key, size_t k_l, const uint8_t *value, size_t v_l) const
