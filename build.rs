@@ -14,12 +14,12 @@ fn main() {
 
     println!("cargo:rustc-link-lib=static=rocksdb");
     println!("cargo:rustc-link-search=native={}/", rocksdb_path);
-    /* 
+
     println!("cargo:rustc-link-lib=zstd");
     println!("cargo:rustc-link-lib=lz4");
     println!("cargo:rustc-link-lib=bz2");
     println!("cargo:rustc-link-lib=snappy");
-    */
+
     println!("cargo:rustc-link-lib=z");
 
     println!("cargo:rerun-if-changed=src/main.rs");
