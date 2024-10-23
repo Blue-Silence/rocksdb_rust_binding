@@ -61,6 +61,16 @@ std::unique_ptr<rocksdb::Iterator> DB::Prefix_Iter(const uint8_t *key, size_t k_
     return std::unique_ptr<rocksdb::Iterator>(it);
 }
 
+std::unique_ptr<rocksdb::Iterator> DB::Start_Iter() const
+{
+    rocksdb::DB *db = (rocksdb::DB *)this->db;
+
+    auto option = rocksdb::ReadOptions();
+    rocksdb::Iterator *it = db->NewIterator(option);
+    it->SeekToFirst();
+    return std::unique_ptr<rocksdb::Iterator>(it);
+}
+
 Pair Next(const rocksdb::Iterator *iter) 
 {
     if (!iter->Valid())

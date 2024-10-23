@@ -22,6 +22,7 @@ public:
     void Delete(const uint8_t* key, size_t k_l) const;
     std::unique_ptr<std::string> Get(const uint8_t* key, size_t k_l) const;
     std::unique_ptr<rocksdb::Iterator> Prefix_Iter(const uint8_t* key, size_t k_l) const;
+    std::unique_ptr<rocksdb::Iterator> Start_Iter() const;
 };
 
 std::unique_ptr<DB> open_default(rust::string path);

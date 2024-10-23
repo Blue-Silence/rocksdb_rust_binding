@@ -21,6 +21,7 @@ mod ffi {
 
         type Iterator;
         unsafe fn Prefix_Iter(self: &DB, key: *const u8, k_l: usize) -> UniquePtr<Iterator>;
+        unsafe fn Start_Iter(self: &DB) -> UniquePtr<Iterator>;
         unsafe fn Next(iter: *const Iterator) -> Result<Pair>;
     }
 }
@@ -76,6 +77,9 @@ mod wrapper {
         }
         pub fn prefix_iter(db: &DB, key: &Vec<u8>) -> Self {
             DbIterator { iter : unsafe { db.db.Prefix_Iter(key.as_ptr(), key.len()) } }
+        }
+        pub fn start_iter(db: &DB) -> Self {
+            DbIterator { iter : unsafe { db.db.Start_Iter() } }
         }
     }
     impl Iterator for DbIterator {
