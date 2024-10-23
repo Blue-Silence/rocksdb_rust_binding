@@ -4,12 +4,14 @@
 #include "rocksdb/db.h"
 #include "rocksdb/slice.h"
 #include <rocksdb_rust_binding/src/lib.rs.h>
+#include <filesystem>
 
 std::unique_ptr<DB> open_default(rust::string path)
 {
     rocksdb::DB *db = nullptr;
     rocksdb::Options options;
     options.create_if_missing = true;
+    std::filesystem::create_directories(std::string{path});
     rocksdb::Status status = rocksdb::DB::Open(options, std::string{path}, &db);
     if (!status.ok()) {
         throw std::runtime_error(status.ToString());
