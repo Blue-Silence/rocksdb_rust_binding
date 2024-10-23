@@ -12,4 +12,10 @@ fn main() {
     for (k,v) in iter {
         println!("k:{:?}, v:{:?} number:: k:{}, v:{}", k, v, String::from_utf8(k.clone()).unwrap(), String::from_utf8(v.clone()).unwrap());
     }
+
+    println!("And then we see total order.");
+    let iter_total = rocksdb::DbIterator::start_iter(&db);
+    for (k,v) in iter_total {
+        println!("k:{:?}, v:{:?} number:: k:{}, v:{}", k, v, String::from_utf8(k.clone()).unwrap(), String::from_utf8(v.clone()).unwrap());
+    }
 }

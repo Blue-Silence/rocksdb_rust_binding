@@ -1,4 +1,4 @@
-use rocksdb_rust_binding::wrapper;
+use rocksdb_rust_binding as rocksdb;
 
 
 
@@ -11,13 +11,11 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let arg_1 = args[1].as_str();
     let arg_2 = args[2].as_str();
-    let arg_3 = args[3].as_str();
     let max_parallel: usize = arg_1.parse().unwrap();
     let max_iter: usize = arg_2.parse().unwrap();
-    let _need_print: bool = arg_3.parse().unwrap();
     let total = max_parallel * max_iter;
 
-    let db = std::sync::Arc::new(wrapper::DB::open_default("/dev/shm/db_test".to_string()));
+    let db = std::sync::Arc::new(rocksdb::DB::open_default("/dev/shm/db_test".to_string()));
 
 
     let mut dir_ns = vec![];
