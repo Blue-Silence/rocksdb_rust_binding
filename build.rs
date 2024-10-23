@@ -1,7 +1,5 @@
 
 fn main() {
-    let vars = std::env::vars();
-    println!("cargo:warning=Get:{:?}", vars);
     let rocksdb_path = if let Ok(s) = std::env::var("ROCKSDB_PATH") {
         s
     } else {
@@ -12,7 +10,7 @@ fn main() {
         .file("src/db.cc")
         .include(format!("{}/include", rocksdb_path))
         .std("c++17")
-        .compile("foo_out");
+        .compile("out");
 
     println!("cargo:rustc-link-lib=static=rocksdb");
     println!("cargo:rustc-link-search=native={}/", rocksdb_path);

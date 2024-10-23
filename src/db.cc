@@ -1,9 +1,9 @@
 #include <iostream>
-#include <rust_cpp/include/db.h>
+#include <rocksdb_rust_binding/include/db.h>
 #include <string>
 #include "rocksdb/db.h"
 #include "rocksdb/slice.h"
-#include <rust_cpp/src/lib.rs.h>
+#include <rocksdb_rust_binding/src/lib.rs.h>
 
 std::unique_ptr<DB> open_default(rust::string path)
 {

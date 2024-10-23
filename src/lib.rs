@@ -5,7 +5,7 @@ mod ffi {
         pub value: UniquePtr<CxxString>,
     }
     unsafe extern "C++" {
-        include!("rust_cpp/include/db.h");
+        include!("rocksdb_rust_binding/include/db.h");
 
         type DB;
         fn open_default(path: String) -> UniquePtr<DB>;

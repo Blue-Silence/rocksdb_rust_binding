@@ -1,4 +1,4 @@
-use rust_cpp::wrapper;
+use rocksdb_rust_binding::wrapper;
 
 
 fn main() {

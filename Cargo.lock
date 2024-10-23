@@ -99,7 +99,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_cpp"
+name = "rocksdb_rust_binding"
 version = "0.1.0"
 dependencies = [
  "cxx",
