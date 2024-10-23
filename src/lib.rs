@@ -41,13 +41,27 @@ mod wrapper {
             }
         }
 
-        pub fn put(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {
+        fn put(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {
             //self.db.Put(key, value)
             unsafe {
                 self.db
                     .Put(key.as_ptr(), key.len(), value.as_ptr(), value.len())
             }
         }
+
+        pub fn put1(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put2(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put3(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put4(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put5(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put6(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put7(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put8(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put9(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put10(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put11(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+        pub fn put12(&self, key: &Vec<u8>, value: &Vec<u8>) -> Result<(), cxx::Exception> {self.put(key, value)}
+
         pub fn get(&self, key: &Vec<u8>) -> Result<Option<Vec<u8>>, cxx::Exception> {
             let re = unsafe { self.db.Get(key.as_ptr(), key.len()) };
             match re {
