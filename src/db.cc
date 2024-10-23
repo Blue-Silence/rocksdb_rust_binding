@@ -22,7 +22,6 @@ std::unique_ptr<DB> open_default(rust::string path)
 
 DB::~DB()
 {
-    std::cout << "I am dying!\n";
     delete this->db;
 }
 
