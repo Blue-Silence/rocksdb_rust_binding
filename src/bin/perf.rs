@@ -15,7 +15,7 @@ fn main() {
     let max_iter: usize = arg_2.parse().unwrap();
     let total = max_parallel * max_iter;
 
-    let db = std::sync::Arc::new(rocksdb::DB::open_default("/dev/shm/db_test".to_string()));
+    let db = std::sync::Arc::new(rocksdb::DB::open_default("/dev/shm/db_test".to_string()).unwrap());
 
 
     let mut dir_ns = vec![];

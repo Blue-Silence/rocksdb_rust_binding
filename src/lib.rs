@@ -8,7 +8,7 @@ mod ffi {
         include!("rocksdb_rust_binding/include/db.h");
 
         type DB;
-        fn open_default(path: String) -> UniquePtr<DB>;
+        fn open_default(path: String) -> Result<UniquePtr<DB>>;
         unsafe fn Get(self: &DB, key: *const u8, k_l: usize) -> Result<UniquePtr<CxxString>>;
         unsafe fn Put(
             self: &DB,
@@ -34,9 +34,10 @@ mod wrapper {
         db: cxx::UniquePtr<crate::ffi::DB>,
     }
     impl DB {
-        pub fn open_default(path: String) -> Self {
-            DB {
-                db: crate::ffi::open_default(path),
+        pub fn open_default(path: String) -> Result<Self, cxx::Exception> {
+            match crate::ffi::open_default(path) {
+                Ok(db) => Ok(DB{db}),
+                Err(e) => Err(e),
             }
         }
 

@@ -12,9 +12,9 @@ std::unique_ptr<DB> open_default(rust::string path)
     options.create_if_missing = true;
     rocksdb::Status status = rocksdb::DB::Open(options, std::string{path}, &db);
     if (!status.ok()) {
-        std::cout << "Err:" << status.ToString() << "\n";
+        throw std::runtime_error(status.ToString());
     }
-    assert(status.ok());
+    //assert(status.ok());
     return std::unique_ptr<DB>(new DB{db});
 }
 
