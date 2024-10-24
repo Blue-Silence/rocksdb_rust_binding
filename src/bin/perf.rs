@@ -5,6 +5,14 @@ use rocksdb_rust_binding as rocksdb;
 use std::thread::*;
 use std::time::SystemTime;
 
+fn gen_len(len:usize) -> Vec<u8> {
+    let mut v = vec![];
+    for i in 0..len {
+        v.push(i.try_into().unwrap());
+    }
+    return v;
+}
+
 fn main() {
     std::env::set_var("RUST_BACKTRACE", "1");
 
@@ -22,7 +30,7 @@ fn main() {
     let mut file_ns = vec![];
     for i in 0..total {
         dir_ns.push(format!("/dir{}", i).to_string());
-        file_ns.push(format!("/file_{}", i).to_string().as_bytes().to_vec());
+        file_ns.push(gen_len(128));
     }
 
 
@@ -34,8 +42,11 @@ fn main() {
             let dir_ns = &dir_ns;
             s.spawn(move || {
                 let t1 = SystemTime::now();
+                
                 for j in 0..max_iter {
-                    let _ = db.put(&dir_ns[i * max_iter + j].as_bytes().to_vec(), &file_ns[i * max_iter + j]);
+                    let id = i * max_iter + j;
+                    let _ = db.put1(&dir_ns[id].as_bytes().to_vec(), &file_ns[id]);
+                    let _ = db.get(&dir_ns[id/5].as_bytes().to_vec());
                 }
                 let t2 = SystemTime::now();
                 println!("t: {} ms", t2.duration_since(t1).unwrap().as_millis());
