@@ -4,12 +4,16 @@ mod ffi {
         pub key: UniquePtr<CxxString>,
         pub value: UniquePtr<CxxString>,
     }
+    pub struct ReGet {
+        pub value: UniquePtr<CxxString>,
+        pub found: u8,
+    }
     unsafe extern "C++" {
         include!("rocksdb_rust_binding/include/db.h");
 
         type DB;
         fn open_default(path: String) -> Result<UniquePtr<DB>>;
-        unsafe fn Get(self: &DB, key: *const u8, k_l: usize) -> Result<UniquePtr<CxxString>>;
+        unsafe fn Get(self: &DB, key: *const u8, k_l: usize) -> Result<ReGet>;
         unsafe fn Put(
             self: &DB,
             key: *const u8,
@@ -36,7 +40,7 @@ mod wrapper {
     impl DB {
         pub fn open_default(path: String) -> Result<Self, cxx::Exception> {
             match crate::ffi::open_default(path) {
-                Ok(db) => Ok(DB{db}),
+                Ok(db) => Ok(DB { db }),
                 Err(e) => Err(e),
             }
         }
@@ -51,10 +55,16 @@ mod wrapper {
         pub fn get(&self, key: &Vec<u8>) -> Result<Option<Vec<u8>>, cxx::Exception> {
             let re = unsafe { self.db.Get(key.as_ptr(), key.len()) };
             match re {
-                Ok(s) => Ok(Some(s.as_bytes().to_vec())),
+                Ok(s) => {
+                    if s.found == 1 {
+                        Ok(Some(s.value.as_bytes().to_vec()))
+                    } else {
+                        Ok(None)
+                    }
+                }
                 Err(e) => {
                     if e.what() == "NotFound: " {
-                        Ok(None)
+                        panic!("Should have catched not-found");
                     } else {
                         //println!("Get:a{}a", e.what());
                         Err(e)
@@ -77,10 +87,14 @@ mod wrapper {
             DbIterator { iter: p }
         }
         pub fn prefix_iter(db: &DB, key: &Vec<u8>) -> Self {
-            DbIterator { iter : unsafe { db.db.Prefix_Iter(key.as_ptr(), key.len()) } }
+            DbIterator {
+                iter: unsafe { db.db.Prefix_Iter(key.as_ptr(), key.len()) },
+            }
         }
         pub fn start_iter(db: &DB) -> Self {
-            DbIterator { iter : unsafe { db.db.Start_Iter() } }
+            DbIterator {
+                iter: unsafe { db.db.Start_Iter() },
+            }
         }
     }
     impl Iterator for DbIterator {

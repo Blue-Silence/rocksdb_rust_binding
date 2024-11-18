@@ -44,15 +44,22 @@ void DB::Delete(const uint8_t *key, size_t k_l) const
         throw std::runtime_error(s.ToString());
 }
 
-std::unique_ptr<std::string> DB::Get(const uint8_t *key, size_t k_l) const
+ReGet DB::Get(const uint8_t *key, size_t k_l) const
 {
+    ReGet re = ReGet{};
     rocksdb::DB *db = (rocksdb::DB *)this->db;
     auto value = new std::string;
     rocksdb::Status s = db->Get(rocksdb::ReadOptions(), Slice{(const char *)key, k_l}, value);
-
+    
+    if(s.IsNotFound()) {
+        re.found = 0;
+        return re;
+    }
     if (!s.ok())
         throw std::runtime_error(s.ToString());
-    return std::unique_ptr<std::string>(value);
+    re.found = 1;
+    re.value = std::move(std::unique_ptr<std::string>(value));
+    return re;
 }
 
 std::unique_ptr<rocksdb::Iterator> DB::Prefix_Iter(const uint8_t *key, size_t k_l) const
