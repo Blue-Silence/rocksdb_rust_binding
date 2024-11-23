@@ -8,9 +8,15 @@
 
 std::unique_ptr<DB> open_default(rust::string path)
 {
+    
+    auto env = rocksdb::Env::Default();
+    env->SetBackgroundThreads(1, rocksdb::Env::LOW);
+    env->SetBackgroundThreads(1, rocksdb::Env::HIGH);
+
     rocksdb::DB *db = nullptr;
     rocksdb::Options options;
     options.create_if_missing = true;
+    options.env = env;
     std::filesystem::create_directories(std::string{path});
     rocksdb::Status status = rocksdb::DB::Open(options, std::string{path}, &db);
     if (!status.ok()) {
