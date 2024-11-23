@@ -26,6 +26,6 @@ public:
     std::unique_ptr<rocksdb::Iterator> Start_Iter() const;
 };
 
-std::unique_ptr<DB> open_default(rust::string path);
+std::unique_ptr<DB> open_default(rust::string path, size_t thread_high, size_t thread_low);
 
 Pair Next(const rocksdb::Iterator *iter);
