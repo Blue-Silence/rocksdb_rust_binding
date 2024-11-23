@@ -6,12 +6,12 @@
 #include <rocksdb_rust_binding/src/lib.rs.h>
 #include <filesystem>
 
-std::unique_ptr<DB> open_default(rust::string path)
+std::unique_ptr<DB> open_default(rust::string path, size_t thread_high, size_t thread_low)
 {
     
     auto env = rocksdb::Env::Default();
-    env->SetBackgroundThreads(1, rocksdb::Env::LOW);
-    env->SetBackgroundThreads(1, rocksdb::Env::HIGH);
+    env->SetBackgroundThreads((int)thread_low, rocksdb::Env::LOW);
+    env->SetBackgroundThreads((int)thread_high, rocksdb::Env::HIGH);
 
     rocksdb::DB *db = nullptr;
     rocksdb::Options options;
